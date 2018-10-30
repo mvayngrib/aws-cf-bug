@@ -1,10 +1,6 @@
 [
   {
-    "ParameterKey": "InstanceRole",
-    "ParameterValue": "kyc-services-ecs-role"
-  },
-  {
-    "ParameterKey": "InstanceProfileName",
-    "ParameterValue": "test-profile-name"
+    "ParameterKey": "PassThroughParam",
+    "ParameterValue": "some-value"
   }
 ]

@@ -1,37 +1,51 @@
 {
     "Parameters": {
-        "InstanceProfileName": {
-            "Type": "String"
-        },
-        "InstanceRole": {
+        "PassThroughParam": {
             "Type": "String"
         }
     },
     "Resources": {
-        "Instance": {
+        "Source": {
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
-                "TemplateURL": "https://mvayngrib-serverless-deployment.s3.amazonaws.com/nestedstacks/ec2.yml",
+                "TemplateURL": "https://mvayngrib-serverless-deployment.s3.amazonaws.com/nestedstacks/source.yml",
                 "Parameters": {
-                    "InstanceProfileName": {
-                        "Fn::GetAtt": "IAM.Outputs.profilename"
+                    "PassThroughParam": {
+                        "Ref": "PassThroughParam"
                     }
                 }
             }
         },
-        "IAM": {
+        "Target": {
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
-                "TemplateURL": "https://mvayngrib-serverless-deployment.s3.amazonaws.com/nestedstacks/iam.yml",
+                "TemplateURL": "https://mvayngrib-serverless-deployment.s3.amazonaws.com/nestedstacks/target.yml",
                 "Parameters": {
-                    "InstanceProfileName": {
-                        "Ref": "InstanceProfileName"
-                    },
-                    "InstanceRole": {
-                        "Ref": "InstanceRole"
+                    "PassThroughParam": {
+                        "Fn::If": [
+                            "HavePassThroughParam",
+                            {
+                                "Fn::GetAtt": "Source.Outputs.PassThroughParam"
+                            },
+                            ""
+                        ]
                     }
                 }
             }
+        }
+    },
+    "Conditions": {
+        "HavePassThroughParam": {
+            "Fn::Not": [
+                {
+                    "Fn::Equals": [
+                        {
+                            "Ref": "PassThroughParam"
+                        },
+                        ""
+                    ]
+                }
+            ]
         }
     }
 }
