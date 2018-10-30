@@ -1,0 +1,37 @@
+{
+    "Parameters": {
+        "InstanceProfileName": {
+            "Type": "String"
+        },
+        "InstanceRole": {
+            "Type": "String"
+        }
+    },
+    "Resources": {
+        "Instance": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "TemplateURL": "https://mvayngrib-serverless-deployment.s3.amazonaws.com/nestedstacks/ec2.yml",
+                "Parameters": {
+                    "InstanceProfileName": {
+                        "Fn::GetAtt": "IAM.Outputs.profilename"
+                    }
+                }
+            }
+        },
+        "IAM": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "TemplateURL": "https://mvayngrib-serverless-deployment.s3.amazonaws.com/nestedstacks/iam.yml",
+                "Parameters": {
+                    "InstanceProfileName": {
+                        "Ref": "InstanceProfileName"
+                    },
+                    "InstanceRole": {
+                        "Ref": "InstanceRole"
+                    }
+                }
+            }
+        }
+    }
+}

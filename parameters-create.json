@@ -1,0 +1,10 @@
+[
+  {
+    "ParameterKey": "InstanceRole",
+    "ParameterValue": "kyc-services-ecs-role"
+  },
+  {
+    "ParameterKey": "InstanceProfileName",
+    "ParameterValue": ""
+  }
+]
