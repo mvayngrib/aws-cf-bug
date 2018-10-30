@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: pass through
+Parameters:
+  PassThroughParam:
+    Type: String
+    Default: ''
+
+Resources:
+  Dummy:
+    Type: AWS::CloudFormation::WaitConditionHandle
+
+Outputs:
+
+  # pass through
+  PassThroughParam:
+    Value: PassThroughParam
+  StackName:
+      Value: !Ref 'AWS::StackName'
+  StackId:
+      Value: !Ref 'AWS::StackId'

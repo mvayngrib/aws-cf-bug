@@ -8,44 +8,13 @@
         "Source": {
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
-                "TemplateURL": "https://mvayngrib-serverless-deployment.s3.amazonaws.com/nestedstacks/source.yml",
+                "TemplateURL": "https://mvayngrib-serverless-deployment.s3.amazonaws.com/nestedstacks/child.yml",
                 "Parameters": {
                     "PassThroughParam": {
                         "Ref": "PassThroughParam"
                     }
                 }
             }
-        },
-        "Target": {
-            "Type": "AWS::CloudFormation::Stack",
-            "Properties": {
-                "TemplateURL": "https://mvayngrib-serverless-deployment.s3.amazonaws.com/nestedstacks/target.yml",
-                "Parameters": {
-                    "PassThroughParam": {
-                        "Fn::If": [
-                            "HavePassThroughParam",
-                            {
-                                "Fn::GetAtt": "Source.Outputs.PassThroughParam"
-                            },
-                            ""
-                        ]
-                    }
-                }
-            }
-        }
-    },
-    "Conditions": {
-        "HavePassThroughParam": {
-            "Fn::Not": [
-                {
-                    "Fn::Equals": [
-                        {
-                            "Ref": "PassThroughParam"
-                        },
-                        ""
-                    ]
-                }
-            ]
         }
     }
 }
